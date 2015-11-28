@@ -67,5 +67,6 @@ int main(void) {
 	CUDA_CHECK_RETURN(cudaDeviceReset());
 
 	printf("Finish!\n");
+	printf("Finish2!\n");
 	return 0;
 }
