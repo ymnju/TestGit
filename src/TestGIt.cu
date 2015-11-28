@@ -69,5 +69,6 @@ int main(void) {
 	printf("Finish!\n");
 	printf("Finish2!\n");
 	printf("Finish from mac!\n");
+	printf("Finish from mac 2!\n");
 	return 0;
 }
