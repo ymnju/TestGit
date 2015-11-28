@@ -71,5 +71,6 @@ int main(void) {
 	printf("Finish from mac!\n");
 	printf("Finish from mac 2!\n");
 	printf("Finish from mac 3!\n");
+	printf("Finish from mac 4!\n");
 	return 0;
 }
