@@ -154,8 +154,24 @@ int main(int argc, char *argv[])
    }
 
    /* lightcurves + geometry file */   
-   fscanf(stdin, "%d", &Lcurves);
-      
+//   fscanf(stdin, "%d", &Lcurves);
+
+   /* 定义文件名和文件指针 */
+   char filename[] = "test_lcs_rel";
+   FILE *fp;
+   /* 打开文件 */
+   fp = fopen(filename, "r");
+   if (fp == NULL) {
+      printf("Failed to open file: %s\n", filename);
+      return 1;
+   }
+   /* 读取文件中的数据 */
+   if (fscanf(fp, "%d", &Lcurves) != 1) {
+      printf("Failed to read data from file: %s\n", filename);
+      fclose(fp);
+      return 1;
+   }    
+
    if (Lcurves > MAX_LC)
    {
       fprintf(stderr, "\nError: Number of lcs  is greater than MAX_LC = %d\n", MAX_LC);
@@ -175,7 +191,7 @@ int main(int argc, char *argv[])
    for (i = 1; i <= Lcurves; i++)
    {
       ave = 0; /* average */
-      fscanf(stdin, "%d %d", &Lpoints[i], &i_temp); /* points in this lightcurve */
+      fscanf(fp, "%d %d", &Lpoints[i], &i_temp); /* points in this lightcurve */
       Inrel[i] = 1 - i_temp;
      
       if (Lpoints[i] > POINTS_MAX)
@@ -195,9 +211,9 @@ int main(int argc, char *argv[])
             fflush(stderr); exit(1);
          }
 
-	 fscanf(stdin, "%lf %lf", &tim[ndata], &brightness[ndata]); /* JD, brightness */	 
-	 fscanf(stdin, "%lf %lf %lf", &e0[1], &e0[2], &e0[3]); /* ecliptic astr_tempocentric coord. of the Sun in AU */
-	 fscanf(stdin, "%lf %lf %lf", &e[1], &e[2], &e[3]); /* ecliptic astrocentric coord. of the Earth in AU */	 
+	 fscanf(fp, "%lf %lf", &tim[ndata], &brightness[ndata]); /* JD, brightness */	 
+	 fscanf(fp, "%lf %lf %lf", &e0[1], &e0[2], &e0[3]); /* ecliptic astr_tempocentric coord. of the Sun in AU */
+	 fscanf(fp, "%lf %lf %lf", &e[1], &e[2], &e[3]); /* ecliptic astrocentric coord. of the Earth in AU */	 
 	 /* selects the minimum and maximum JD */
 	 if (tim[ndata] < jd_min) jd_min = tim[ndata];
 	 if (tim[ndata] > jd_max) jd_max = tim[ndata];
@@ -237,6 +253,9 @@ int main(int argc, char *argv[])
          sig[k2] = ave;
       }
    } /* i, all lightcurves */        
+
+   fclose(fp);
+
 
    /* jd_0 is set to the day before the lowest JD in the data */
    jd_0 = (int) jd_min;
